@@ -82,8 +82,6 @@ namespace Vendr.Contrib.PaymentProviders.PayNl
             };
         }
 
-
-
         public override string GetCancelUrl(OrderReadOnly order, PayNlPaymentProviderSettings settings)
         {
             settings.MustNotBeNull("settings");
@@ -115,12 +113,16 @@ namespace Vendr.Contrib.PaymentProviders.PayNl
 
         public override CallbackResult ProcessCallback(OrderReadOnly order, HttpRequestBase request, PayNlPaymentProviderSettings settings)
         {
+            Vendr.Log.Info<PayNlPaymentProvider>("PayNl Callback for order");
             var callbackInfo = CallbackRequestModel.FromRequest(request);
 
             var payNlConfiguration = new PAYNLSDK.API.PayNlConfiguration(settings.ServiceId, settings.ApiToken);
             var payNlClient = new ApiTokenClient(payNlConfiguration);
             var transaction = new Transaction(payNlClient);
+
+            Vendr.Log.Info<PayNlPaymentProvider>("Retrieve transaction details from PayNl to validate order");
             var info = transaction.Info(callbackInfo.OrderId);
+            Vendr.Log.Info<PayNlPaymentProvider>("Retrieved transaction details {@payNlTransactionDetails}", info);
 
             var vendrTransactionInfo = new TransactionInfo
             {
@@ -130,14 +132,17 @@ namespace Vendr.Contrib.PaymentProviders.PayNl
             };
             if ((int)info.PaymentDetails.State == 100)
             {
+                Vendr.Log.Info<PayNlPaymentProvider>("Payment State is autorized");
                 vendrTransactionInfo.PaymentStatus = PaymentStatus.Authorized;
             }
             else if ((int)info.PaymentDetails.State > 0)
             {
+                Vendr.Log.Info<PayNlPaymentProvider>("Payment State is still pending");
                 vendrTransactionInfo.PaymentStatus = PaymentStatus.PendingExternalSystem;
             }
             else if ((int)info.PaymentDetails.State < 0)
             {
+                Vendr.Log.Info<PayNlPaymentProvider>("Payment State was closed in error");
                 vendrTransactionInfo.PaymentStatus = PaymentStatus.Error;
             }
 
