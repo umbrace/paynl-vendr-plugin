@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpecs", "NuSpecs", "{8106
 		build\NuSpecs\Vendr.Contrib.PaymentProviders.Template.nuspec = build\NuSpecs\Vendr.Contrib.PaymentProviders.Template.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vendr.Contrib.PaymentProviders.Template", "src\Vendr.Contrib.PaymentProviders.Template\Vendr.Contrib.PaymentProviders.Template.csproj", "{54D75F3D-BD42-45E8-BC99-210A9AD71CEB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vendr.Contrib.PaymentProviders.PayNl", "src\Vendr.Contrib.PaymentProviders.Template\Vendr.Contrib.PaymentProviders.PayNl.csproj", "{54D75F3D-BD42-45E8-BC99-210A9AD71CEB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Umbraco", "Umbraco", "{BD551EF3-D31E-4E57-B15D-0E03290C87B8}"
 	ProjectSection(SolutionItems) = preProject
