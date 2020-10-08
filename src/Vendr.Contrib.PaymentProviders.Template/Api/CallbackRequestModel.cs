@@ -42,6 +42,9 @@ namespace Vendr.Contrib.PaymentProviders.PayNl.Api
         [System.Xml.Serialization.XmlElement("order_id")]
         public string OrderId { get; set; }
 
+        [System.Xml.Serialization.XmlElement("info")]
+        public string Info { get; set; }
+
         public static CallbackRequestModel FromRequest(HttpRequestBase request)
         {
             decimal.TryParse(request.QueryString["amount"], NumberStyles.Any, CultureInfo.InvariantCulture, out var amount);
@@ -55,7 +58,7 @@ namespace Vendr.Contrib.PaymentProviders.PayNl.Api
                 Extra1 = request.QueryString["extra1"],
                 Extra2 = request.QueryString["extra2"],
                 Extra3 = request.QueryString["extra3"],
-                info = request.QueryString["info"]
+                Info = request.QueryString["info"]
             };
         }
 
