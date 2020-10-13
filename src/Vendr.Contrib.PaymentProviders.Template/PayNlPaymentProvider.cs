@@ -114,21 +114,33 @@ namespace Vendr.Contrib.PaymentProviders.PayNl
         public override CallbackResult ProcessCallback(OrderReadOnly order, HttpRequestBase request, PayNlPaymentProviderSettings settings)
         {
             Vendr.Log.Info<PayNlPaymentProvider>("PayNl Callback for order");
-            var callbackInfo = CallbackRequestModel.FromRequest(request);
+
+            var transactionId = "";
+            var sync = true;
+            if (sync)
+            {
+                transactionId = request.QueryString["orderId"];
+            }
+            else
+            {
+                // async callback on webhook url
+                var callbackInfo = CallbackRequestModel.FromRequest(request);
+                transactionId = callbackInfo.OrderId;
+            }
 
             var payNlConfiguration = new PAYNLSDK.API.PayNlConfiguration(settings.ServiceId, settings.ApiToken);
             var payNlClient = new ApiTokenClient(payNlConfiguration);
             var transaction = new Transaction(payNlClient);
 
             Vendr.Log.Info<PayNlPaymentProvider>("Retrieve transaction details from PayNl to validate order");
-            var info = transaction.Info(callbackInfo.OrderId);
+            var info = transaction.Info(transactionId );
             Vendr.Log.Info<PayNlPaymentProvider>("Retrieved transaction details {@payNlTransactionDetails}", info);
 
             var vendrTransactionInfo = new TransactionInfo
             {
                 AmountAuthorized = info.PaymentDetails.Amount,
                 TransactionFee = 0m,
-                TransactionId = callbackInfo.OrderId,
+                TransactionId = transactionId ,
             };
             if ((int)info.PaymentDetails.State == 100)
             {
@@ -154,7 +166,7 @@ namespace Vendr.Contrib.PaymentProviders.PayNl
                     {"CardType", info.PaymentDetails.CardType },
                     {"CardBrand", info.PaymentDetails.CardBrand },
                     {"IpAddress", info.Connection.IP },
-                    {"TransactionId", callbackInfo.OrderId },
+                    {"TransactionId", transactionId  },
                     {"PaymentSessionId", info.StatsDetails.PaymentSessionId.ToString() }
                 }
             };
