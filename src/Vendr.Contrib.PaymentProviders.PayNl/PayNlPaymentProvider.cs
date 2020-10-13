@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PAYNLSDK;
@@ -47,11 +49,16 @@ namespace Vendr.Contrib.PaymentProviders.PayNl
                 OrderExchangeUrl = callbackUrl,
                 OrderNumber = $"{order.OrderNumber}"
             };
+
+            var languageCode = System.Globalization.CultureInfo
+                .GetCultures(CultureTypes.NeutralCultures)
+                .FirstOrDefault(ci => 
+                    string.Equals(ci.ThreeLetterISOLanguageName, order.LanguageIsoCode,  StringComparison.OrdinalIgnoreCase))
+                ?.TwoLetterISOLanguageName;
             transactionRequest.Enduser =
                 new EndUser
                 {
-                    Language = "EN",
-                    //Language = order.LanguageIsoCode, //TODO: Change from 3 letter iso code to 2 letter
+                    Language = languageCode,
                     CustomerReference = order.CustomerInfo.CustomerReference,
                     EmailAddress = order.CustomerInfo.Email
                 };
