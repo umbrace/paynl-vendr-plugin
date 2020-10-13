@@ -50,7 +50,8 @@ namespace Vendr.Contrib.PaymentProviders.PayNl
             transactionRequest.Enduser =
                 new EndUser
                 {
-                    Language = order.LanguageIsoCode,
+                    Language = "EN",
+                    //Language = order.LanguageIsoCode, //TODO: Change from 3 letter iso code to 2 letter
                     CustomerReference = order.CustomerInfo.CustomerReference,
                     EmailAddress = order.CustomerInfo.Email
                 };
