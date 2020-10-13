@@ -15,7 +15,7 @@
         <ArtifactFilesDir>$(ArtifactsDir)\files</ArtifactFilesDir>
         <ArtifactPackagesDir>$(ArtifactsDir)\packages</ArtifactPackagesDir>
         
-        <PaymentProviderName>Template</PaymentProviderName>
+        <PaymentProviderName>PayNl</PaymentProviderName>
         <ProjectName>Vendr.Contrib.PaymentProviders.$(PaymentProviderName)</ProjectName>
         <MinUmbracoVersion>8.2.0</MinUmbracoVersion>
 
