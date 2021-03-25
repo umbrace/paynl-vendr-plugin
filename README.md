@@ -1,3 +1,3 @@
-# Vendr Template Payment Provider
+# Vendr Payment Provider for PAY.NL / PAY.BE
 
-Template Payment Provider for Vendr, the eCommerce package for Umbrao v8+
+Payment Provider for Vendr, the eCommerce package for Umbrao v8+
